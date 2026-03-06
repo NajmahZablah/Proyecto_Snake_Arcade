@@ -1,0 +1,7 @@
+build/
+.qtcreator/
+*.user
+*.autosave
+*.o
+*.exe
+Makefile
