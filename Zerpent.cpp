@@ -1,7 +1,8 @@
 #include "Zerpent.h"
-#include <stdexcept>
 using namespace std;
 
+// Calcula donde quedaría la nueva cabeza sumando la dirección actual
+// Inserta esa nueva cabeza frente al vector y elimina la cola del final
 // Constructor
 
 Serpiente::Serpiente(int inicioX, int inicioY, int tamanioInicial) :
@@ -33,6 +34,7 @@ void Serpiente::mover() {
     }
 }
 
+// No permite ir en dirección opuesta
 void Serpiente::cambiarDireccion(int dX, int dY) {
     // Evitar una colisión inmediata
     if (dX == -direccionX && dY == -direccionY) {
@@ -49,7 +51,7 @@ void Serpiente::crecer() {
 
 // Getters
 Coordenada* Serpiente::getCabeza() {
-    return &cuerpo[0];
+    return &cuerpo[0]; // uso de punteros para manejar la cabeza
 }
 
 const vector<Coordenada>& Serpiente::getCuerpo() const {

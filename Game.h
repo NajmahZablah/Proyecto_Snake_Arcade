@@ -1,4 +1,4 @@
-#pragma once
+#pragma once // asegura que el encabezado se incluya una sola vez durante la compilación
 #include "Zerpent.h"
 #include <vector>
 #include <string>
@@ -7,6 +7,10 @@
 
 enum class EstadoJuego {
     MENU,
+    CREAR_CUENTA,
+    SELECCION,
+    NIVELES,
+    CONFIRMAR_ELIMINAR,
     JUGANDO,
     PAUSANDO,
     GAME_OVER,
@@ -17,6 +21,12 @@ enum class Nivel {
     UNO = 1, // velocidad constante y sin obstáculos
     DOS = 2, // Velocidad incremental + muros
     TRES = 3 // Obstáculos aleatorios + aceitunas especiales
+};
+
+// Estrucutra Usuario
+struct Usuario {
+    std::string nombre;
+    std::string contrasena;
 };
 
 // Clase principal del juego
@@ -31,7 +41,16 @@ public:
     void pausar();
     void reiniciar();
 
-    // Getters para el renderizador
+    // Navegación de estados
+    void setEstado(EstadoJuego nuevoEstado);
+
+    // Sistema de usuarios
+    bool crearCuenta(const std::string& nombre, const std::string& contrasena);
+    bool iniciarSesion(const std::string& nombre, const std::string& contrasena);
+    bool eliminarCuenta(const std::string& contrasena);
+    std::string getUsuarioActual() const;
+
+    // Getters para el Renderer
     EstadoJuego getEstado() const;
     Nivel getNievel() const;
     const Serpiente& getSerpiente() const;
@@ -44,13 +63,13 @@ public:
     // High Scores
     void guardarPuntaje(const std::string& nombre);
     std::vector<PuntajeRecord> cargarPuntajes() const;
-    void ordenarPuntajes(std::vector<PuntajeRecord>& lsita) const; // Ordenamiento burbuja
+    void ordenarPuntajes(std::vector<PuntajeRecord>& lista) const;
 
 private:
-    // Dimensiones
+    // Dimensiones del tablero
     int ancho, alto;
 
-    // Entidades
+    // Entidades del juego
     Serpiente serpiente;
     Aceituna aceituna;
     Estampilla estampilla;
@@ -63,7 +82,10 @@ private:
     float velocidadBase;
     float velocidadActual;
 
-    // Métodos internos
+    // Usuario activo
+    std::string usuarioActual;
+
+    // Métodos internos del juego
     void generarAceituna();
     void generarEstampilla();
     void generarObstaculos();
@@ -71,6 +93,11 @@ private:
     void ajustarVelocidad();
     bool posicionLibre(const Coordenada& posicion) const;
 
-    // Archivo de puntajes
+    // Archivos
     const std::string ARCHIVO_PUNTAJES = "highscores.txt";
+    const std::string ARCHIVO_USUARIOS = "usuarios.txt";
+
+    // Helpers de usuarios
+    std::vector<Usuario> cargarUsuarios() const;
+    void guardarUsuarios(const std::vector<Usuario>& lista) const;
 };

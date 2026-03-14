@@ -1,8 +1,8 @@
 #include "Game.h"
-#include <fstream>
-#include <cstdlib>
-#include <ctime>
-#include <algorithm>
+#include <fstream> // manipular archivos
+#include <cstdlib> // funciones de próposito general
+#include <ctime> // manejar fecha y hora del sistema
+#include <algorithm> // conjunto de funciones optimizadas
 using namespace std;
 
 // Constructor
@@ -13,7 +13,8 @@ Juego::Juego(int anchoTablero, int altoTablero):
     nivelActual(Nivel::UNO),
     puntaje(0),
     velocidadBase(0.15f),
-    velocidadActual(0.25f)
+    velocidadActual(0.25f),
+    usuarioActual("")
 
 {
     srand((unsigned)time(nullptr));
@@ -22,6 +23,7 @@ Juego::Juego(int anchoTablero, int altoTablero):
 }
 
 // Control principal
+// Prepara todo según el nivel elegido
 void Juego::iniciar(Nivel nivelSeleccionado) {
     nivelActual = nivelSeleccionado;
     puntaje = 0;
@@ -57,6 +59,7 @@ void Juego::iniciar(Nivel nivelSeleccionado) {
     generarEstampilla();
 }
 
+// Mueve la serpiente y verifica colisiones
 void Juego::actualizar() {
     if (estado != EstadoJuego::JUGANDO) {
         return;
@@ -87,6 +90,59 @@ void Juego::pausar() {
 
 void Juego::reiniciar() {
     iniciar(nivelActual);
+}
+
+void Juego::setEstado(EstadoJuego nuevoEstado) {
+    estado = nuevoEstado;
+}
+
+// Sistema de usuarios
+bool Juego::crearCuenta(const string& nombre, const string& contrasena) {
+    // Verificar que el nombre no exista ya
+    auto lista = cargarUsuarios();
+    for (const auto& u : lista) {
+        if (u.nombre == nombre) {
+            return false; // usuario ya existe
+        }
+    }
+
+    // Agregar nuevo usuario y guardar
+    lista.push_back({ nombre, contrasena });
+    guardarUsuarios(lista);
+    usuarioActual = nombre;
+    estado = EstadoJuego::SELECCION;
+    return true;
+}
+
+bool Juego::iniciarSesion(const string& nombre, const string& contrasena) {
+    auto lista = cargarUsuarios();
+    for (const auto& u : lista) {
+        if (u.nombre == nombre && u.contrasena == contrasena) {
+            usuarioActual = nombre;
+            estado = EstadoJuego::SELECCION;
+            return true;
+        }
+    }
+    return false; // entrada incorrecta
+}
+
+bool Juego::eliminarCuenta(const string& contrasena) {
+    auto lista = cargarUsuarios();
+
+    for (auto it = lista.begin(); it != lista.end(); ++it) {
+        if (it->nombre == usuarioActual && it->contrasena == contrasena) {
+            lista.erase(it); // eliminar del vector
+            guardarUsuarios(lista); // guardar cambios en .txt
+            usuarioActual = ""; // cerrar sesión
+            estado = EstadoJuego::MENU;
+            return true;
+        }
+    }
+    return false; // contraseña incorrecta
+}
+
+string Juego::getUsuarioActual() const {
+    return usuarioActual;
 }
 
 // Getters
@@ -122,7 +178,8 @@ float Juego::getVelocidad() const {
     return velocidadActual;
 }
 
-// Lógica
+// Lógica interna
+// Usa el puntero a la cabeza para revisar
 void Juego::verificarColisiones() {
     Coordenada* cabeza = serpiente.getCabeza();
 
@@ -275,5 +332,28 @@ void Juego::ordenarPuntajes(vector<PuntajeRecord>& lista) const {
                 lista[j + 1] = temp;
             }
         }
+    }
+}
+
+// Helpers de usuarios
+vector<Usuario> Juego::cargarUsuarios() const {
+    vector<Usuario> lista;
+    ifstream archivo(ARCHIVO_USUARIOS);
+    string linea;
+    while (getline(archivo, linea)) {
+        size_t coma = linea.find(',');
+        if (coma == string::npos) continue;
+        Usuario u;
+        u.nombre     = linea.substr(0, coma);
+        u.contrasena = linea.substr(coma + 1);
+        lista.push_back(u);
+    }
+    return lista;
+}
+
+void Juego::guardarUsuarios(const vector<Usuario>& lista) const {
+    ofstream archivo(ARCHIVO_USUARIOS);
+    for (const auto& u : lista) {
+        archivo << u.nombre << "," << u.contrasena << "\n";
     }
 }

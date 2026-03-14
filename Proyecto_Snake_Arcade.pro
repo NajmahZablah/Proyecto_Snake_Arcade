@@ -5,11 +5,17 @@ CONFIG -= qt
 
 SOURCES += \
         Game.cpp \
+        PantallaMenu.cpp \
+        PantallaSeleccion.cpp \
+        Renderer.cpp \
         Zerpent.cpp \
         main.cpp
 
 HEADERS += \
     Game.h \
+    PantallaMenu.h \
+    PantallaSeleccion.h \
+    Renderer.h \
     Zerpent.h
 
 INCLUDEPATH += C:/SFML-2.6.2/include

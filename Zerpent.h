@@ -4,6 +4,7 @@
 
 // Estructuras de datos principales
 
+// Un punto en el tablero x e y
 struct Coordenada {
     int x;
     int y;
@@ -13,15 +14,16 @@ struct Coordenada {
     }
 };
 
+// El objeto que la serpiente come
 struct Aceituna {
     Coordenada posicion;
-    int tipo; // 0 = aceituna normal, 1 = aceituna dorada (altera la velocidad... broom! broom!)
+    int tipo; // 0 = aceituna normal +1 segmento + 10 pts, 1 = aceituna dorada +1 segmento + 25pts (altera la velocidad... broom! broom!)
     int puntos; // pts que otorga
     bool activa;
 };
 
 // Clase Zerpent
-
+// Guarda un vector<Coordenada> que representa todo el cuerpo y cuerpo[0] es la cabeza
 class Serpiente {
 public:
     // Constructor
