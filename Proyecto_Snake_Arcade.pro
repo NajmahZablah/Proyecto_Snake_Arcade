@@ -5,7 +5,9 @@ CONFIG -= qt
 
 SOURCES += \
         Game.cpp \
+        PantallaJuego.cpp \
         PantallaMenu.cpp \
+        PantallaScores.cpp \
         PantallaSeleccion.cpp \
         Renderer.cpp \
         Zerpent.cpp \
@@ -13,7 +15,9 @@ SOURCES += \
 
 HEADERS += \
     Game.h \
+    PantallaJuego.h \
     PantallaMenu.h \
+    PantallaScores.h \
     PantallaSeleccion.h \
     Renderer.h \
     Zerpent.h

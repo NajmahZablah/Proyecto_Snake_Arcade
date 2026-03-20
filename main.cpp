@@ -3,18 +3,21 @@
 #include <SFML/Graphics.hpp>
 
 int main() {
-    // Tablero 40x30 celdas | Ventana 800x600 pixeles
-    Juego juego(40, 30);
+    // Tablero 30x28 celdas | Ventana 800x600 px
+    Juego juego(30, 28);
     Renderer renderer(800, 600);
 
     sf::Clock reloj;
+    sf::Clock relojDelta; // para dt de animaciones
 
     while (renderer.ventanaAbierta()) {
+
+        float dt = relojDelta.restart().asSeconds();
 
         // 1) Eventos
         renderer.procesarEventos(juego);
 
-        // 2) Lógica del juego (solo cuando está jugando)
+        // 2) Lógica del juego
         if (juego.getEstado() == EstadoJuego::JUGANDO) {
             if (reloj.getElapsedTime().asSeconds() >= juego.getVelocidad()) {
                 juego.actualizar();
@@ -22,7 +25,10 @@ int main() {
             }
         }
 
-        // 3) Dibujar
+        // 3) Actualizar timers visuales (overlay estampilla, etc.)
+        renderer.actualizar(dt, juego);
+
+        // 4) Dibujar
         renderer.dibujar(juego);
     }
 

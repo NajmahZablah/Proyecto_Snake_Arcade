@@ -3,9 +3,9 @@
 #include "Game.h"
 #include "PantallaMenu.h"
 #include "PantallaSeleccion.h"
+#include "PantallaJuego.h"
+#include "PantallaScores.h"
 
-//  Renderer: Controlador visual principal
-//  Delega el dibujo a cada clase de pantalla
 class Renderer {
 public:
     Renderer(int anchoVentana, int altoVentana);
@@ -14,23 +14,31 @@ public:
     void cerrar();
 
     void procesarEventos(Juego& juego);
+    void actualizar(float dt, Juego& juego);
     void dibujar(Juego& juego);
 
 private:
-    // Ventana principal
     sf::RenderWindow ventana;
     int anchoV, altoV;
 
-    // Recursos compartidos entre pantallas
-    sf::Font fuente;
+    sf::Font    fuente;
+
     sf::Texture texFondoMenu;
     sf::Texture texFondoSeleccion;
+    sf::Texture texFondoJuego;
+    sf::Texture texAceituna;
+    sf::Texture texAceitunaDorada;
+    sf::Texture texCaja;
+    sf::Texture texEstMono;
+    sf::Texture texEstErizo;
+    sf::Texture texEstGato;
 
-    // Pantallas activas
-    PantallaMenu pantallaMenu;
+    PantallaMenu      pantallaMenu;
     PantallaSeleccion pantallaSeleccion;
+    PantallaJuego     pantallaJuego;
+    PantallaScores    pantallaScores;
 
-    // Carga de recursos
-    void cargarTexturas();
     void cargarFuente();
+    void cargarTexturas();
+    void cargarIcono();   // carga aceituna.png como ícono de la ventana
 };
