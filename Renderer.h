@@ -21,7 +21,7 @@ private:
     sf::RenderWindow ventana;
     int anchoV, altoV;
 
-    sf::Font    fuente;
+    sf::Font fuente;
 
     sf::Texture texFondoMenu;
     sf::Texture texFondoSeleccion;
@@ -33,12 +33,12 @@ private:
     sf::Texture texEstErizo;
     sf::Texture texEstGato;
 
-    PantallaMenu      pantallaMenu;
+    PantallaMenu pantallaMenu;
     PantallaSeleccion pantallaSeleccion;
-    PantallaJuego     pantallaJuego;
-    PantallaScores    pantallaScores;
+    PantallaJuego pantallaJuego;
+    PantallaScores pantallaScores;
 
     void cargarFuente();
     void cargarTexturas();
-    void cargarIcono();   // carga aceituna.png como ícono de la ventana
+    void cargarIcono(); // carga aceituna.png como ícono de la ventana
 };

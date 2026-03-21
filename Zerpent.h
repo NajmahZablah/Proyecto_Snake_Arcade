@@ -55,10 +55,9 @@ private:
 };
 
 // Estructura Estampilla (coleccionable por nivel)
-// Nivel 1 -> Mono (debonheir)
-// Nivel 2 -> Erizo (doremin)
-// Nivel 3 -> Gato (seinyan)
-
+// Nivel 1 -> Mono (Debonheir)
+// Nivel 2 -> Erizo (Doremin)
+// Nivel 3 -> Gato (Seinyan)
 struct Estampilla {
     Coordenada posicion;
     int id; // 0 = mono, 1 = erizo, 2 = gato
@@ -68,7 +67,6 @@ struct Estampilla {
 };
 
 // Estructura para High Scores
-
 struct PuntajeRecord {
     std:: string nombreJugador;
     int puntaje;

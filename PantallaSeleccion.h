@@ -4,32 +4,29 @@
 #include <string>
 
 /* PantallaSeleccion
- * SUB-PANTALLAS:
- *   SELECCION — Niveles / Puntajes / Eliminar / Cerrar Sesión
- *   NIVELES   — Nivel 1/2/3 + botón "Ver Estampillas"
+ * SUBPANTALLAS:
+ *   SELECCIÓN — Niveles, Puntajes, Eliminar y Cerrar Sesión
+ *   NIVELES — Nivel 1, 2 y 3 + botón "Ver Estampillas"
  * OVERLAY:
- *   Ver Estampillas — muestra los 3 animales con su nivel
+ *   Ver Estampillas — muestra los 3 animales con su nivel respectivo
  */
 
 class PantallaSeleccion {
 public:
-    PantallaSeleccion(sf::RenderWindow& ventana, sf::Font& fuente,
-                      sf::Texture& texFondo,
-                      sf::Texture& texEstMono,
-                      sf::Texture& texEstErizo,
-                      sf::Texture& texEstGato);
+    PantallaSeleccion(sf::RenderWindow& ventana, sf::Font& fuente, sf::Texture& texFondo,
+                      sf::Texture& texEstMono, sf::Texture& texEstErizo, sf::Texture& texEstGato);
 
     void dibujar(Juego& juego);
     void procesarEventos(sf::Event& evento, Juego& juego);
 
 private:
     sf::RenderWindow& ventana;
-    sf::Font&         fuente;
-    sf::Texture&      texFondo;
-    sf::Texture&      texEstMono;
-    sf::Texture&      texEstErizo;
-    sf::Texture&      texEstGato;
-    sf::Sprite        sprFondo;
+    sf::Font& fuente;
+    sf::Texture& texFondo;
+    sf::Texture& texEstMono;
+    sf::Texture& texEstErizo;
+    sf::Texture& texEstGato;
+    sf::Sprite sprFondo;
 
     bool mostrarEstampillas; // overlay de "Ver Estampillas"
 

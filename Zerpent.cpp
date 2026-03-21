@@ -4,13 +4,12 @@ using namespace std;
 // Calcula donde quedaría la nueva cabeza sumando la dirección actual
 // Inserta esa nueva cabeza frente al vector y elimina la cola del final
 // Constructor
-
 Serpiente::Serpiente(int inicioX, int inicioY, int tamanioInicial) :
     direccionX(1), direccionY(0), viva(true), creciendo(false) {
 
     // Inicializar el cuerpo de la serpiente de forma horizontal hacia la izquierda
     for (int i = 0; i < tamanioInicial; i++) {
-        cuerpo.push_back( {inicioX - i, inicioY});
+        cuerpo.push_back({inicioX - i, inicioY});
     }
 }
 
@@ -21,7 +20,7 @@ void Serpiente::mover() {
     }
 
     // Nueva posición de la cabeza
-    Coordenada nuevaCabeza = { cuerpo[0].x + direccionX, cuerpo[0].y + direccionY};
+    Coordenada nuevaCabeza = {cuerpo[0].x + direccionX, cuerpo[0].y + direccionY};
 
     // Insertar nueva cabeza al frente
     cuerpo.insert(cuerpo.begin(), nuevaCabeza);
@@ -92,6 +91,6 @@ void Serpiente::reset(int inicioX, int inicioY) {
     viva = true;
     creciendo = false;
     for (int i = 0; i < 3; i++) {
-        cuerpo.push_back( { inicioX - i, inicioY });
+        cuerpo.push_back({inicioX - i, inicioY });
     }
 }

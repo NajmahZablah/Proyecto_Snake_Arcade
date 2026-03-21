@@ -1,25 +1,20 @@
 #include "PantallaJuego.h"
 using namespace std;
 
-const sf::Color PantallaJuego::COLOR_NARANJA   (255, 175,  70);
-const sf::Color PantallaJuego::COLOR_MORADO    ( 75,  55, 110);
-const sf::Color PantallaJuego::COLOR_MORADO_OSC( 45,  30,  70);
-const sf::Color PantallaJuego::COLOR_BORDE     (200, 145,  60);
-const sf::Color PantallaJuego::COLOR_GRIS_AZU  ( 55,  55,  85);
-const sf::Color PantallaJuego::COLOR_VERDE     ( 60, 160,  60);
-const sf::Color PantallaJuego::COLOR_DORADO    (255, 210,  50);
-const sf::Color PantallaJuego::COLOR_HINT      (210, 190, 140);
+const sf::Color PantallaJuego::COLOR_NARANJA (255, 175, 70);
+const sf::Color PantallaJuego::COLOR_MORADO (75, 55, 110);
+const sf::Color PantallaJuego::COLOR_MORADO_OSC(45, 30, 70);
+const sf::Color PantallaJuego::COLOR_BORDE (200, 145, 60);
+const sf::Color PantallaJuego::COLOR_GRIS_AZU (55, 55, 85);
+const sf::Color PantallaJuego::COLOR_VERDE (60, 160, 60);
+const sf::Color PantallaJuego::COLOR_DORADO (255, 210, 50);
+const sf::Color PantallaJuego::COLOR_HINT (210, 190, 140);
 
-PantallaJuego::PantallaJuego(sf::RenderWindow& ventana, sf::Font& fuente,
-                             sf::Texture& texFondo,
-                             sf::Texture& texAceituna,
-                             sf::Texture& texAceitunaDorada,
+PantallaJuego::PantallaJuego(sf::RenderWindow& ventana, sf::Font& fuente, sf::Texture& texFondo,
+                             sf::Texture& texAceituna, sf::Texture& texAceitunaDorada,
                              sf::Texture& texCaja,
-                             sf::Texture& texEstMono,
-                             sf::Texture& texEstErizo,
-                             sf::Texture& texEstGato)
-    : ventana(ventana), fuente(fuente),
-    texFondo(texFondo),
+                             sf::Texture& texEstMono, sf::Texture& texEstErizo, sf::Texture& texEstGato)
+    : ventana(ventana), fuente(fuente), texFondo(texFondo),
     texAceituna(texAceituna), texAceitunaDorada(texAceitunaDorada),
     texCaja(texCaja),
     texEstMono(texEstMono), texEstErizo(texEstErizo), texEstGato(texEstGato),
@@ -33,19 +28,20 @@ PantallaJuego::PantallaJuego(sf::RenderWindow& ventana, sf::Font& fuente,
 void PantallaJuego::actualizar(float dt) {
     if (mostrarOverlayEstampilla) {
         timerOverlayEstampilla -= dt;
-        if (timerOverlayEstampilla <= 0.f)
+        if (timerOverlayEstampilla <= 0.f) {
             mostrarOverlayEstampilla = false;
+        }
     }
 }
 
-// ── Dibujar ───────────────────────────────────────────────────────────────────
+// Dibujar
 void PantallaJuego::dibujar(Juego& juego) {
     const Estampilla& est = juego.getEstampilla();
     if (est.recolectada && !estampilaYaMostrada) {
         mostrarOverlayEstampilla = true;
-        timerOverlayEstampilla   = DURACION_OVERLAY;
-        idEstampillaRecolectada  = est.id;
-        estampilaYaMostrada      = true;
+        timerOverlayEstampilla = DURACION_OVERLAY;
+        idEstampillaRecolectada = est.id;
+        estampilaYaMostrada = true;
     }
 
     sprFondo.setTexture(texFondo);
@@ -57,64 +53,82 @@ void PantallaJuego::dibujar(Juego& juego) {
     dibujarHUD(juego);
 
     EstadoJuego estado = juego.getEstado();
-    if      (estado == EstadoJuego::PAUSANDO)  dibujarOverlayPausa();
-    else if (estado == EstadoJuego::GAME_OVER) dibujarOverlayGameOver(juego);
+    if (estado == EstadoJuego::PAUSANDO)  {
+        dibujarOverlayPausa();
+    } else if (estado == EstadoJuego::GAME_OVER) {
+        dibujarOverlayGameOver(juego);
+    }
 
-    if (mostrarOverlayEstampilla && estado == EstadoJuego::JUGANDO)
+    if (mostrarOverlayEstampilla && estado == EstadoJuego::JUGANDO) {
         dibujarOverlayEstampilla();
+    }
 }
 
-// ── Procesar Eventos ──────────────────────────────────────────────────────────
+// Procesar Eventos
 void PantallaJuego::procesarEventos(sf::Event& evento, Juego& juego) {
     EstadoJuego estado = juego.getEstado();
 
-    // ── JUGANDO ───────────────────────────────────────────────────────────────
+    // JUGANDO
     if (estado == EstadoJuego::JUGANDO) {
         if (evento.type == sf::Event::KeyPressed) {
             switch (evento.key.code) {
-            case sf::Keyboard::Up:
-            case sf::Keyboard::W:  juego.procesarEntrada( 0,-1); break;
-            case sf::Keyboard::Down:
-            case sf::Keyboard::S:  juego.procesarEntrada( 0, 1); break;
-            case sf::Keyboard::Left:
-            case sf::Keyboard::A:  juego.procesarEntrada(-1, 0); break;
-            case sf::Keyboard::Right:
-            case sf::Keyboard::D:  juego.procesarEntrada( 1, 0); break;
-            // FIX #1: P = pausa, ESC = volver directo a NIVELES
-            case sf::Keyboard::P:
-                juego.pausar();
-                break;
-            case sf::Keyboard::Escape:
-                resetearEstadoOverlay();
-                juego.setEstado(EstadoJuego::NIVELES);
-                break;
-            case sf::Keyboard::R:
-                resetearEstadoOverlay();
-                juego.reiniciar();
-                break;
-            default: break;
+                case sf::Keyboard::Up:
+                case sf::Keyboard::W: {
+                    juego.procesarEntrada( 0,-1);
+                    break;
+                }
+                case sf::Keyboard::Down:
+                case sf::Keyboard::S: {
+                    juego.procesarEntrada( 0, 1); break;
+                }
+                case sf::Keyboard::Left:
+                case sf::Keyboard::A: {
+                    juego.procesarEntrada(-1, 0);
+                    break;
+                }
+                case sf::Keyboard::Right:
+                case sf::Keyboard::D:  {
+                    juego.procesarEntrada( 1, 0);
+                    break;
+                }
+                case sf::Keyboard::P: {
+                    juego.pausar();
+                    break;
+                }
+                case sf::Keyboard::Escape: {
+                    resetearEstadoOverlay();
+                    juego.setEstado(EstadoJuego::NIVELES);
+                    break;
+                }
+                case sf::Keyboard::R: {
+                    resetearEstadoOverlay();
+                    juego.reiniciar();
+                    break;
+                }
+                default: {
+                    break;
+                }
             }
         }
     }
 
-    // ── PAUSANDO ──────────────────────────────────────────────────────────────
+    // PAUSANDO
     else if (estado == EstadoJuego::PAUSANDO) {
         if (evento.type == sf::Event::KeyPressed) {
-            // FIX #1: solo P reanuda desde pausa; ESC ya no reanuda, vuelve a NIVELES
-            if (evento.key.code == sf::Keyboard::P)
+            if (evento.key.code == sf::Keyboard::P) {
                 juego.pausar();
+            }
             if (evento.key.code == sf::Keyboard::Escape) {
                 resetearEstadoOverlay();
                 juego.setEstado(EstadoJuego::NIVELES);
             }
         }
-        if (evento.type == sf::Event::MouseButtonPressed &&
-            evento.mouseButton.button == sf::Mouse::Left) {
-            // FIX #1: coordenadas de botones alineadas con dibujarOverlayPausa()
+        if (evento.type == sf::Event::MouseButtonPressed && evento.mouseButton.button == sf::Mouse::Left) {
             // Panel: PX=260, PY=200, PW=280, PH=250
             // Reanudar: y = PY+80 = 280, Salir: y = PY+140 = 340
-            if (botonPresionado(300, 280, 200, 46))
+            if (botonPresionado(300, 280, 200, 46)) {
                 juego.pausar();
+            }
             if (botonPresionado(300, 340, 200, 46)) {
                 resetearEstadoOverlay();
                 juego.setEstado(EstadoJuego::NIVELES);
@@ -122,7 +136,7 @@ void PantallaJuego::procesarEventos(sf::Event& evento, Juego& juego) {
         }
     }
 
-    // ── GAME OVER ─────────────────────────────────────────────────────────────
+    // GAME OVER
     else if (estado == EstadoJuego::GAME_OVER) {
         if (evento.type == sf::Event::KeyPressed) {
             if (evento.key.code == sf::Keyboard::R) {
@@ -138,7 +152,7 @@ void PantallaJuego::procesarEventos(sf::Event& evento, Juego& juego) {
             evento.mouseButton.button == sf::Mouse::Left) {
             // Panel: PX=235, PY=190
             // Reiniciar: x=PX+20=255, y=PY+128=318
-            // Volver:    x=PX+PW-150=415, y=318
+            // Volver: x=PX+PW-150=415, y=318
             if (botonPresionado(255, 318, 130, 42)) {
                 resetearEstadoOverlay();
                 juego.reiniciar();
@@ -152,13 +166,13 @@ void PantallaJuego::procesarEventos(sf::Event& evento, Juego& juego) {
 }
 
 void PantallaJuego::resetearEstadoOverlay() {
-    puntajeGuardado          = false;
+    puntajeGuardado = false;
     mostrarOverlayEstampilla = false;
-    timerOverlayEstampilla   = 0.f;
-    estampilaYaMostrada      = false;
+    timerOverlayEstampilla = 0.f;
+    estampilaYaMostrada = false;
 }
 
-// ── HUD ───────────────────────────────────────────────────────────────────────
+// HUD
 void PantallaJuego::dibujarHUD(const Juego& juego) {
     sf::RectangleShape barra(sf::Vector2f(800.f, (float)HUD_ALTO));
     barra.setPosition(0, 0);
@@ -171,9 +185,18 @@ void PantallaJuego::dibujarHUD(const Juego& juego) {
 
     string nivelStr;
     switch (juego.getNievel()) {
-    case Nivel::UNO:  nivelStr = "Nivel 1 - Facil";   break;
-    case Nivel::DOS:  nivelStr = "Nivel 2 - Medio";   break;
-    case Nivel::TRES: nivelStr = "Nivel 3 - Dificil"; break;
+        case Nivel::UNO: {
+            nivelStr = "Nivel 1 - Facil";
+            break;
+        }
+        case Nivel::DOS: {
+            nivelStr = "Nivel 2 - Medio";
+            break;
+        }
+        case Nivel::TRES: {
+            nivelStr = "Nivel 3 - Dificil";
+            break;
+        }
     }
     dibujarTextoCentrado(nivelStr, 10, 18, sf::Color::White);
 
@@ -197,7 +220,7 @@ void PantallaJuego::dibujarHUD(const Juego& juego) {
     ventana.draw(spr);
 }
 
-// ── Tablero ───────────────────────────────────────────────────────────────────
+// Tablero
 void PantallaJuego::dibujarTablero(const Juego& juego) {
     sf::RectangleShape marco(sf::Vector2f(600.f, 560.f));
     marco.setPosition((float)TABLERO_X, (float)TABLERO_Y);
@@ -219,24 +242,23 @@ void PantallaJuego::dibujarTablero(const Juego& juego) {
         ventana.draw(l);
     }
 
-    // FIX #3: obstáculos (caja) más grandes — 36px
-    for (const auto& obs : juego.getObstaculos())
+    // Obstáculos (caja) 36px
+    for (const auto& obs : juego.getObstaculos()) {
         dibujarSpriteEnCelda(texCaja, obs.x, obs.y, 36);
+    }
 
-    // FIX #3: aceitunas más grandes — 36px, con glow
+    // Aceitunas 36px + glow
     const Aceituna& ac = juego.getAceituna();
     if (ac.activa) {
         float cx = TABLERO_X + ac.posicion.x * CELDA + CELDA / 2.f;
         float cy = TABLERO_Y + ac.posicion.y * CELDA + CELDA / 2.f;
-        sf::Color glowAc = (ac.tipo == 1)
-                               ? sf::Color(255, 200,  50, 90)
-                               : sf::Color( 80, 220,  80, 90);
+        sf::Color glowAc = (ac.tipo == 1) ? sf::Color(255, 200,  50, 90) : sf::Color( 80, 220,  80, 90);
         dibujarGlow(cx, cy, 20.f, glowAc, 6);
         sf::Texture& texAc = (ac.tipo == 1) ? texAceitunaDorada : texAceituna;
         dibujarSpriteEnCelda(texAc, ac.posicion.x, ac.posicion.y, 36);
     }
 
-    // Estampilla 54px + glow blanco (confirmado)
+    // Estampilla 54px + glow blanco
     const Estampilla& est = juego.getEstampilla();
     if (est.visible && !est.recolectada) {
         float cx = TABLERO_X + est.posicion.x * CELDA + CELDA / 2.f;
@@ -271,7 +293,7 @@ void PantallaJuego::dibujarTablero(const Juego& juego) {
     }
 }
 
-// ── Overlay Pausa ─────────────────────────────────────────────────────────────
+// Overlay Pausa
 void PantallaJuego::dibujarOverlayPausa() {
     sf::RectangleShape ov(sf::Vector2f(800.f, 600.f));
     ov.setFillColor(sf::Color(0, 0, 0, 160));
@@ -288,18 +310,17 @@ void PantallaJuego::dibujarOverlayPausa() {
     dibujarTextoCentrado("PAUSA", PY + 18.f, 34, COLOR_NARANJA);
     // Botones: y = PY+80=280 y PY+140=340
     dibujarBoton("Reanudar", 300, PY + 80.f,  200, 46, COLOR_MORADO);
-    dibujarBoton("Salir",    300, PY + 140.f, 200, 46, COLOR_GRIS_AZU);
+    dibujarBoton("Salir", 300, PY + 140.f, 200, 46, COLOR_GRIS_AZU);
 
     // Hint dentro del panel: y = PY+202=402
     sf::RectangleShape hintBg(sf::Vector2f(230.f, 22.f));
     hintBg.setPosition(285.f, PY + 202.f);
     hintBg.setFillColor(sf::Color(0, 0, 0, 150));
     ventana.draw(hintBg);
-    // FIX #1: actualizado a "P = reanudar"
     dibujarTextoCentrado("P = reanudar  |  Esc = salir", PY + 204.f, 14, COLOR_HINT);
 }
 
-// ── Overlay Game Over ─────────────────────────────────────────────────────────
+// Overlay Game Over
 void PantallaJuego::dibujarOverlayGameOver(Juego& juego) {
     if (!puntajeGuardado && !juego.getUsuarioActual().empty()) {
         juego.guardarPuntaje(juego.getUsuarioActual());
@@ -318,14 +339,13 @@ void PantallaJuego::dibujarOverlayGameOver(Juego& juego) {
     panel.setOutlineThickness(2.f);
     ventana.draw(panel);
 
-    dibujarTextoCentrado("GAME OVER",                                  PY + 15.f, 34, sf::Color(255, 90, 90));
-    dibujarTextoCentrado("Puntaje: " + to_string(juego.getPuntaje()),  PY + 60.f, 22, sf::Color::White);
+    dibujarTextoCentrado("GAME OVER", PY + 15.f, 34, sf::Color(255, 90, 90));
+    dibujarTextoCentrado("Puntaje: " + to_string(juego.getPuntaje()), PY + 60.f, 22, sf::Color::White);
     dibujarTextoCentrado("Guardado como: " + juego.getUsuarioActual(), PY + 92.f, 14, sf::Color(180, 165, 200));
 
-    // FIX #1: coordenadas exactas alineadas con procesarEventos()
     // Reiniciar: x=255, y=318    Volver: x=415, y=318
     dibujarBoton("Reiniciar", 255, PY + 128.f, 130, 42, COLOR_VERDE);
-    dibujarBoton("Volver",    415, PY + 128.f, 130, 42, COLOR_GRIS_AZU);
+    dibujarBoton("Volver", 415, PY + 128.f, 130, 42, COLOR_GRIS_AZU);
 
     sf::RectangleShape hintBg(sf::Vector2f(290.f, 22.f));
     hintBg.setPosition(PX + 20.f, PY + 196.f);
@@ -334,13 +354,16 @@ void PantallaJuego::dibujarOverlayGameOver(Juego& juego) {
     dibujarTextoCentrado("R = reiniciar  |  Esc = volver", PY + 198.f, 14, COLOR_HINT);
 }
 
-// ── Overlay Estampilla ────────────────────────────────────────────────────────
+// Overlay Estampilla
 void PantallaJuego::dibujarOverlayEstampilla() {
     float progreso = timerOverlayEstampilla / DURACION_OVERLAY;
     float alpha = 1.f;
-    if (progreso > 0.85f)      alpha = (1.f - progreso) / 0.15f;
-    else if (progreso < 0.20f) alpha = progreso / 0.20f;
-    sf::Uint8 a      = (sf::Uint8)(alpha * 230);
+    if (progreso > 0.85f) {
+        alpha = (1.f - progreso) / 0.15f;
+    } else if (progreso < 0.20f) {
+        alpha = progreso / 0.20f;
+    }
+    sf::Uint8 a = (sf::Uint8)(alpha * 230);
     sf::Uint8 aTexto = (sf::Uint8)(alpha * 255);
 
     sf::RectangleShape panel(sf::Vector2f(300.f, 250.f));
@@ -367,15 +390,26 @@ void PantallaJuego::dibujarOverlayEstampilla() {
     spr.setScale(escala, escala);
     spr.setPosition(400.f - sprW / 2.f, 210.f);
     spr.setColor(sf::Color(255, 255, 255, aTexto));
-    dibujarGlow(400.f, 210.f + sprH / 2.f, 50.f,
-                sf::Color(255, 255, 255, (sf::Uint8)(alpha * 45)), 6);
+    dibujarGlow(400.f, 210.f + sprH / 2.f, 50.f, sf::Color(255, 255, 255, (sf::Uint8)(alpha * 45)), 6);
     ventana.draw(spr);
 
     string nombreP, nombreA;
     switch (idEstampillaRecolectada) {
-    case 0: nombreP = "Debonheir"; nombreA = "el Mono";  break;
-    case 1: nombreP = "Doremin";   nombreA = "el Erizo"; break;
-    case 2: nombreP = "Seinyan";   nombreA = "el Gato";  break;
+        case 0: {
+            nombreP = "Debonheir";
+            nombreA = "el Mono";
+            break;
+        }
+        case 1: {
+            nombreP = "Doremin";
+            nombreA = "el Erizo";
+            break;
+        }
+        case 2: {
+            nombreP = "Seinyan";
+            nombreA = "el Gato";
+            break;
+        }
     }
 
     sf::Text tDesc;
@@ -395,7 +429,7 @@ void PantallaJuego::dibujarOverlayEstampilla() {
     ventana.draw(tPts);
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// Helpers
 void PantallaJuego::dibujarGlow(float cx, float cy, float radio, sf::Color color, int capas) {
     for (int i = capas; i >= 1; i--) {
         float r = radio * ((float)i / capas);
@@ -414,16 +448,21 @@ void PantallaJuego::dibujarSpriteEnCelda(sf::Texture& tex, int cx, int cy, int t
     float escala = (float)tam / (float)max(sz.x, sz.y);
     spr.setScale(escala, escala);
     float offset = (CELDA - tam) / 2.f;
-    spr.setPosition(TABLERO_X + cx * CELDA + offset,
-                    TABLERO_Y + cy * CELDA + offset);
+    spr.setPosition(TABLERO_X + cx * CELDA + offset, TABLERO_Y + cy * CELDA + offset);
     ventana.draw(spr);
 }
 
 sf::Texture& PantallaJuego::texEstPorId(int id) {
     switch (id) {
-    case 1:  return texEstErizo;
-    case 2:  return texEstGato;
-    default: return texEstMono;
+        case 1: {
+            return texEstErizo;
+        }
+        case 2: {
+            return texEstGato;
+        }
+        default: {
+            return texEstMono;
+        }
     }
 }
 

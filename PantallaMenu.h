@@ -5,8 +5,7 @@
 
 class PantallaMenu {
 public:
-    PantallaMenu(sf::RenderWindow& ventana, sf::Font& fuente,
-                 sf::Texture& texFondo, sf::Texture& texFondoSel);
+    PantallaMenu(sf::RenderWindow& ventana, sf::Font& fuente, sf::Texture& texFondo, sf::Texture& texFondoSel);
 
     void dibujar(Juego& juego);
     void procesarEventos(sf::Event& evento, Juego& juego);
@@ -22,7 +21,7 @@ private:
     std::string inputContrasena;
     std::string inputConfirmar;
     bool campoNombreActivo;
-    int  campoActivoReg;   // 0=nombre, 1=pass, 2=confirmar
+    int campoActivoReg; // 0 = nombre, 1 = pass, 2 = confirmar
     std::string mensajeError;
 
     void dibujarLogin();
@@ -35,13 +34,13 @@ private:
 
     // Texto plano
     void dibujarTexto(const std::string& texto, float x, float y, int tamano, sf::Color color);
-    // Mensaje con fondo negro (para errores sobre fondos de imagen)
+    // Mensaje con fondo negro
     void dibujarMensaje(const std::string& texto, float x, float y, int tamano, sf::Color color);
     // Hint con fondo semitransparente y color amarillo
     void dibujarHint(const std::string& texto, float x, float y);
     void dibujarBoton(const std::string& texto, float x, float y, float ancho, float alto, sf::Color color);
-    void dibujarCampoTexto(const std::string& etiqueta, const std::string& valor,
-                           float x, float y, bool activo, bool esClave = false);
+    void dibujarCampoTexto(const std::string& etiqueta, const std::string& valor, float x, float y,
+                           bool activo, bool esClave = false);
     bool botonPresionado(float x, float y, float ancho, float alto);
     void ponerFondo(sf::Texture& tex);
     void limpiarCampos();

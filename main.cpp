@@ -11,7 +11,6 @@ int main() {
     sf::Clock relojDelta; // para dt de animaciones
 
     while (renderer.ventanaAbierta()) {
-
         float dt = relojDelta.restart().asSeconds();
 
         // 1) Eventos

@@ -4,9 +4,9 @@
 #include <string>
 
 /* PantallaScores
- * Muestra el top 10 de puntajes filtrado por nivel.
- * Tiene 3 tabs: Nivel 1 / Nivel 2 / Nivel 3
- * Los datos vienen de Game::cargarPuntajes() (ya ordenados por bubble sort).
+ * Muestra el top 10 de puntajes filtrado por nivel
+ * Tiene 3 tabs: Nivel 1, Nivel 2 y Nivel 3
+ * Los datos vienen de Game::cargarPuntajes() (ordenados por bubble sort)
  */
 
 class PantallaScores {
@@ -18,23 +18,20 @@ public:
 
 private:
     sf::RenderWindow& ventana;
-    sf::Font&         fuente;
-    sf::Texture&      texFondo;
-    sf::Sprite        sprFondo;
+    sf::Font& fuente;
+    sf::Texture& texFondo;
+    sf::Sprite sprFondo;
 
     int tabActiva; // 1, 2 o 3
 
-    // Sub-dibujo
+    // Subdibujo
     void dibujarTabs();
     void dibujarTabla(const std::vector<PuntajeRecord>& lista);
 
     // Helpers visuales
-    void dibujarTexto(const std::string& texto, float x, float y,
-                      int tamano, sf::Color color);
-    void dibujarTextoCentrado(const std::string& texto, float y,
-                              int tamano, sf::Color color);
-    void dibujarBoton(const std::string& texto, float x, float y,
-                      float ancho, float alto, sf::Color color);
+    void dibujarTexto(const std::string& texto, float x, float y, int tamano, sf::Color color);
+    void dibujarTextoCentrado(const std::string& texto, float y, int tamano, sf::Color color);
+    void dibujarBoton(const std::string& texto, float x, float y, float ancho, float alto, sf::Color color);
     bool botonPresionado(float x, float y, float ancho, float alto);
 
     // Paleta

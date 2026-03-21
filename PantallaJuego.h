@@ -5,14 +5,9 @@
 
 class PantallaJuego {
 public:
-    PantallaJuego(sf::RenderWindow& ventana, sf::Font& fuente,
-                  sf::Texture& texFondo,
-                  sf::Texture& texAceituna,
-                  sf::Texture& texAceitunaDorada,
-                  sf::Texture& texCaja,
-                  sf::Texture& texEstMono,
-                  sf::Texture& texEstErizo,
-                  sf::Texture& texEstGato);
+    PantallaJuego(sf::RenderWindow& ventana, sf::Font& fuente, sf::Texture& texFondo,
+                  sf::Texture& texAceituna, sf::Texture& texAceitunaDorada, sf::Texture& texCaja,
+                  sf::Texture& texEstMono, sf::Texture& texEstErizo, sf::Texture& texEstGato);
 
     void dibujar(Juego& juego);
     void procesarEventos(sf::Event& evento, Juego& juego);
@@ -20,30 +15,30 @@ public:
 
 private:
     sf::RenderWindow& ventana;
-    sf::Font&         fuente;
-    sf::Texture&      texFondo;
-    sf::Texture&      texAceituna;
-    sf::Texture&      texAceitunaDorada;
-    sf::Texture&      texCaja;
-    sf::Texture&      texEstMono;
-    sf::Texture&      texEstErizo;
-    sf::Texture&      texEstGato;
-    sf::Sprite        sprFondo;
+    sf::Font& fuente;
+    sf::Texture& texFondo;
+    sf::Texture& texAceituna;
+    sf::Texture& texAceitunaDorada;
+    sf::Texture& texCaja;
+    sf::Texture& texEstMono;
+    sf::Texture& texEstErizo;
+    sf::Texture& texEstGato;
+    sf::Sprite sprFondo;
 
     bool  puntajeGuardado;
 
     // Overlay estampilla
-    bool  mostrarOverlayEstampilla;
+    bool mostrarOverlayEstampilla;
     float timerOverlayEstampilla;
-    int   idEstampillaRecolectada;
-    bool  estampilaYaMostrada;  // evita re-activar en el mismo nivel
+    int idEstampillaRecolectada;
+    bool estampilaYaMostrada;  // evita reactivar en el mismo nivel
     static constexpr float DURACION_OVERLAY = 2.8f;
 
     // Layout
-    static const int HUD_ALTO   = 40;
-    static const int CELDA      = 20;
-    static const int TABLERO_X  = 100;
-    static const int TABLERO_Y  = 40;
+    static const int HUD_ALTO = 40;
+    static const int CELDA = 20;
+    static const int TABLERO_X = 100;
+    static const int TABLERO_Y = 40;
     static const int SPRITE_TAM = 32;
 
     void dibujarHUD(const Juego& juego);

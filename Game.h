@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 
+using namespace std;
+
 enum class EstadoJuego {
     MENU,
     CREAR_CUENTA,
@@ -16,14 +18,14 @@ enum class EstadoJuego {
 };
 
 enum class Nivel {
-    UNO = 1,
-    DOS = 2,
-    TRES = 3
+    UNO = 1, // Nivel Fácil
+    DOS = 2, // Nivel Medio
+    TRES = 3 // Nivel Experto
 };
 
 struct Usuario {
-    std::string nombre;
-    std::string contrasena;
+    string nombre;
+    string contrasena;
 };
 
 class Juego {
@@ -39,10 +41,10 @@ public:
     void setEstado(EstadoJuego nuevoEstado);
 
     // Sistema de usuarios
-    bool crearCuenta(const std::string& nombre, const std::string& contrasena);
-    bool iniciarSesion(const std::string& nombre, const std::string& contrasena);
-    bool eliminarCuenta(const std::string& contrasena);
-    std::string getUsuarioActual() const;
+    bool crearCuenta(const string& nombre, const string& contrasena);
+    bool iniciarSesion(const string& nombre, const string& contrasena);
+    bool eliminarCuenta(const string& contrasena);
+    string getUsuarioActual() const;
 
     // Getters
     EstadoJuego getEstado() const;
@@ -50,14 +52,14 @@ public:
     const Serpiente& getSerpiente() const;
     const Aceituna& getAceituna() const;
     const Estampilla& getEstampilla() const;
-    const std::vector<Coordenada>& getObstaculos() const;
+    const vector<Coordenada>& getObstaculos() const;
     int getPuntaje() const;
     float getVelocidad() const;
 
     // High Scores
-    void guardarPuntaje(const std::string& nombre);
-    std::vector<PuntajeRecord> cargarPuntajes() const;
-    void ordenarPuntajes(std::vector<PuntajeRecord>& lista) const;
+    void guardarPuntaje(const string& nombre);
+    vector<PuntajeRecord> cargarPuntajes() const;
+    void ordenarPuntajes(vector<PuntajeRecord>& lista) const;
 
 private:
     int ancho, alto;
@@ -65,7 +67,7 @@ private:
     Serpiente serpiente;
     Aceituna aceituna;
     Estampilla estampilla;
-    std::vector<Coordenada> obstaculos;
+    vector<Coordenada> obstaculos;
 
     EstadoJuego estado;
     Nivel nivelActual;
@@ -73,7 +75,7 @@ private:
     float velocidadBase;
     float velocidadActual;
 
-    std::string usuarioActual;
+    string usuarioActual;
 
     void generarAceituna();
     void generarEstampilla();
@@ -82,9 +84,9 @@ private:
     void ajustarVelocidad();
     bool posicionLibre(const Coordenada& posicion) const;
 
-    const std::string ARCHIVO_PUNTAJES = "highscores.txt";
-    const std::string ARCHIVO_USUARIOS = "usuarios.txt";
+    const string ARCHIVO_PUNTAJES = "highscores.txt";
+    const string ARCHIVO_USUARIOS = "usuarios.txt";
 
-    std::vector<Usuario> cargarUsuarios() const;
-    void guardarUsuarios(const std::vector<Usuario>& lista) const;
+    vector<Usuario> cargarUsuarios() const;
+    void guardarUsuarios(const vector<Usuario>& lista) const;
 };

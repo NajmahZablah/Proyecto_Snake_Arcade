@@ -1,24 +1,24 @@
 #include "PantallaScores.h"
 using namespace std;
 
-// ── Paleta ────────────────────────────────────────────────────────────────────
-const sf::Color PantallaScores::COLOR_NARANJA     (255, 175,  70);
-const sf::Color PantallaScores::COLOR_MORADO      ( 75,  55, 110);
-const sf::Color PantallaScores::COLOR_MORADO_OSC  ( 45,  30,  70);
-const sf::Color PantallaScores::COLOR_BORDE       (200, 145,  60);
-const sf::Color PantallaScores::COLOR_GRIS_AZU    ( 55,  55,  85);
-const sf::Color PantallaScores::COLOR_DORADO      (255, 210,  50);
-const sf::Color PantallaScores::COLOR_VERDE_OSC   ( 40, 110,  40);
-const sf::Color PantallaScores::COLOR_AMARILLO_OSC(140, 100,   0);
-const sf::Color PantallaScores::COLOR_ROJO_OSC    (130,  40,  40);
+// Paleta
+const sf::Color PantallaScores::COLOR_NARANJA (255, 175, 70);
+const sf::Color PantallaScores::COLOR_MORADO (75, 55, 110);
+const sf::Color PantallaScores::COLOR_MORADO_OSC (45, 30, 70);
+const sf::Color PantallaScores::COLOR_BORDE (200, 145, 60);
+const sf::Color PantallaScores::COLOR_GRIS_AZU (55, 55, 85);
+const sf::Color PantallaScores::COLOR_DORADO (255, 210, 50);
+const sf::Color PantallaScores::COLOR_VERDE_OSC (40, 110, 40);
+const sf::Color PantallaScores::COLOR_AMARILLO_OSC (140, 100, 0);
+const sf::Color PantallaScores::COLOR_ROJO_OSC (130, 40, 40);
 
-// ── Constructor ───────────────────────────────────────────────────────────────
+// Constructor
 PantallaScores::PantallaScores(sf::RenderWindow& ventana, sf::Font& fuente, sf::Texture& texFondo)
     : ventana(ventana), fuente(fuente), texFondo(texFondo),
     tabActiva(1)
 {}
 
-// ── Dibujar ───────────────────────────────────────────────────────────────────
+// Dibujar
 void PantallaScores::dibujar(Juego& juego) {
     // Fondo
     sprFondo.setTexture(texFondo);
@@ -47,15 +47,20 @@ void PantallaScores::dibujar(Juego& juego) {
     dibujarBoton("Volver", 290, 530, 220, 44, COLOR_GRIS_AZU);
 }
 
-// ── Procesar Eventos ──────────────────────────────────────────────────────────
+// Procesar Eventos
 void PantallaScores::procesarEventos(sf::Event& evento, Juego& juego) {
-    if (evento.type == sf::Event::MouseButtonPressed &&
-        evento.mouseButton.button == sf::Mouse::Left) {
+    if (evento.type == sf::Event::MouseButtonPressed && evento.mouseButton.button == sf::Mouse::Left) {
 
         // Tabs
-        if (botonPresionado( 90, 88, 180, 38)) tabActiva = 1;
-        if (botonPresionado(310, 88, 180, 38)) tabActiva = 2;
-        if (botonPresionado(530, 88, 180, 38)) tabActiva = 3;
+        if (botonPresionado(90, 88, 180, 38)) {
+            tabActiva = 1;
+        }
+        if (botonPresionado(310, 88, 180, 38)) {
+            tabActiva = 2;
+        }
+        if (botonPresionado(530, 88, 180, 38)) {
+            tabActiva = 3;
+        }
 
         // Volver
         if (botonPresionado(290, 530, 220, 44)) {
@@ -63,28 +68,25 @@ void PantallaScores::procesarEventos(sf::Event& evento, Juego& juego) {
         }
     }
 
-    if (evento.type == sf::Event::KeyPressed &&
-        evento.key.code == sf::Keyboard::Escape) {
+    if (evento.type == sf::Event::KeyPressed && evento.key.code == sf::Keyboard::Escape) {
         juego.setEstado(EstadoJuego::SELECCION);
     }
 }
 
-// ── Tabs ──────────────────────────────────────────────────────────────────────
+// Tabs
 void PantallaScores::dibujarTabs() {
     struct Tab { string label; int nivel; float x; sf::Color color; };
     Tab tabs[3] = {
-        { "Nivel 1 - Facil",   1,  90.f, COLOR_VERDE_OSC    },
-        { "Nivel 2 - Medio",   2, 310.f, COLOR_AMARILLO_OSC },
-        { "Nivel 3 - Dificil", 3, 530.f, COLOR_ROJO_OSC     }
+        {"Nivel 1 - Facil", 1,  90.f, COLOR_VERDE_OSC},
+        {"Nivel 2 - Medio", 2, 310.f, COLOR_AMARILLO_OSC},
+        {"Nivel 3 - Dificil", 3, 530.f, COLOR_ROJO_OSC}
     };
 
     for (const auto& tab : tabs) {
         bool activa = (tab.nivel == tabActiva);
 
         // Fondo del tab: más brillante si está activo
-        sf::Color fondo = activa
-                              ? sf::Color(tab.color.r + 30, tab.color.g + 30, tab.color.b + 30)
-                              : tab.color;
+        sf::Color fondo = activa ? sf::Color(tab.color.r + 30, tab.color.g + 30, tab.color.b + 30) : tab.color;
 
         sf::RectangleShape rect(sf::Vector2f(180.f, 38.f));
         rect.setPosition(tab.x, 88.f);
@@ -113,7 +115,7 @@ void PantallaScores::dibujarTabs() {
     }
 }
 
-// ── Tabla de puntajes ─────────────────────────────────────────────────────────
+// Tabla de puntajes
 void PantallaScores::dibujarTabla(const vector<PuntajeRecord>& lista) {
     // Encabezados de columna
     float yHeader = 140.f;
@@ -124,10 +126,10 @@ void PantallaScores::dibujarTabla(const vector<PuntajeRecord>& lista) {
     header.setOutlineThickness(1.f);
     ventana.draw(header);
 
-    dibujarTexto("#",        98.f,  yHeader + 5.f, 15, COLOR_NARANJA);
-    dibujarTexto("Jugador", 148.f,  yHeader + 5.f, 15, COLOR_NARANJA);
-    dibujarTexto("Puntaje", 450.f,  yHeader + 5.f, 15, COLOR_NARANJA);
-    dibujarTexto("Nivel",   620.f,  yHeader + 5.f, 15, COLOR_NARANJA);
+    dibujarTexto("#", 98.f, yHeader + 5.f, 15, COLOR_NARANJA);
+    dibujarTexto("Jugador", 148.f, yHeader + 5.f, 15, COLOR_NARANJA);
+    dibujarTexto("Puntaje", 450.f, yHeader + 5.f, 15, COLOR_NARANJA);
+    dibujarTexto("Nivel", 620.f, yHeader + 5.f, 15, COLOR_NARANJA);
 
     if (lista.empty()) {
         dibujarTextoCentrado("Sin registros todavia", 310.f, 20, sf::Color(160, 140, 180));
@@ -142,43 +144,61 @@ void PantallaScores::dibujarTabla(const vector<PuntajeRecord>& lista) {
         // Fondo de fila alternado
         sf::RectangleShape fila(sf::Vector2f(640.f, 32.f));
         fila.setPosition(80.f, y);
-        fila.setFillColor(i % 2 == 0
-                              ? sf::Color(35, 25, 55, 200)
-                              : sf::Color(50, 35, 75, 200));
+        fila.setFillColor(i % 2 == 0 ? sf::Color(35, 25, 55, 200) : sf::Color(50, 35, 75, 200));
         fila.setOutlineColor(sf::Color(80, 60, 100, 120));
         fila.setOutlineThickness(1.f);
         ventana.draw(fila);
 
         // Color especial para top 3
         sf::Color colorFila = sf::Color(210, 195, 225);
-        if (i == 0) colorFila = COLOR_DORADO;
-        else if (i == 1) colorFila = sf::Color(200, 200, 200); // plata
-        else if (i == 2) colorFila = sf::Color(200, 140,  80); // bronce
+        if (i == 0) {
+            colorFila = COLOR_DORADO;
+        } else if (i == 1) {
+            colorFila = sf::Color(200, 200, 200); // plata
+        } else if (i == 2) {
+            colorFila = sf::Color(200, 140,  80); // bronce
+        }
 
         // Medalla para top 3
         string pos;
-        if      (i == 0) pos = "1.";
-        else if (i == 1) pos = "2.";
-        else if (i == 2) pos = "3.";
-        else             pos = to_string(i + 1) + ".";
+        if (i == 0) {
+            pos = "1.";
+        } else if (i == 1) {
+            pos = "2.";
+        } else if (i == 2) {
+            pos = "3.";
+        } else {
+            pos = to_string(i + 1) + ".";
+        }
 
-        dibujarTexto(pos,                              98.f,  y + 7.f, 16, colorFila);
-        dibujarTexto(lista[i].nombreJugador,          148.f,  y + 7.f, 16, colorFila);
-        dibujarTexto(to_string(lista[i].puntaje),     450.f,  y + 7.f, 16, colorFila);
+        dibujarTexto(pos, 98.f, y + 7.f, 16, colorFila);
+        dibujarTexto(lista[i].nombreJugador, 148.f, y + 7.f, 16, colorFila);
+        dibujarTexto(to_string(lista[i].puntaje), 450.f, y + 7.f, 16, colorFila);
 
         // Nivel como texto legible
         string nivelStr;
         switch (lista[i].nivel) {
-        case 1: nivelStr = "Facil";   break;
-        case 2: nivelStr = "Medio";   break;
-        case 3: nivelStr = "Dificil"; break;
-        default: nivelStr = "?";
+            case 1: {
+                nivelStr = "Facil";
+                break;
+            }
+            case 2: {
+                nivelStr = "Medio";
+                break;
+            }
+            case 3: {
+                nivelStr = "Dificil";
+                break;
+            }
+            default: {
+                nivelStr = "?";
+            }
         }
         dibujarTexto(nivelStr, 620.f, y + 7.f, 16, colorFila);
     }
 }
 
-// ── Helpers visuales ──────────────────────────────────────────────────────────
+// Helpers visuales
 void PantallaScores::dibujarTexto(const string& texto, float x, float y, int tamano, sf::Color color) {
     sf::Text t;
     t.setFont(fuente);
@@ -220,6 +240,5 @@ void PantallaScores::dibujarBoton(const string& texto, float x, float y, float a
 
 bool PantallaScores::botonPresionado(float x, float y, float ancho, float alto) {
     sf::Vector2i mouse = sf::Mouse::getPosition(ventana);
-    return mouse.x >= x && mouse.x <= x + ancho &&
-           mouse.y >= y && mouse.y <= y + alto;
+    return mouse.x >= x && mouse.x <= x + ancho && mouse.y >= y && mouse.y <= y + alto;
 }
