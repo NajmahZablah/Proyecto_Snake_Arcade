@@ -25,13 +25,13 @@ private:
     sf::Texture& texEstGato;
     sf::Sprite sprFondo;
 
-    bool  puntajeGuardado;
+    bool puntajeGuardado;
 
     // Overlay estampilla
     bool mostrarOverlayEstampilla;
     float timerOverlayEstampilla;
     int idEstampillaRecolectada;
-    bool estampilaYaMostrada;  // evita reactivar en el mismo nivel
+    bool estampilaYaMostrada;
     static constexpr float DURACION_OVERLAY = 2.8f;
 
     // Layout
@@ -41,6 +41,7 @@ private:
     static const int TABLERO_Y = 40;
     static const int SPRITE_TAM = 32;
 
+    // Sub-dibujo
     void dibujarHUD(const Juego& juego);
     void dibujarTablero(const Juego& juego);
     void dibujarOverlayPausa();
@@ -48,6 +49,7 @@ private:
     void dibujarOverlayEstampilla();
     void resetearEstadoOverlay();
 
+    // Helpers
     void dibujarSpriteEnCelda(sf::Texture& tex, int cx, int cy, int tam);
     void dibujarGlow(float cx, float cy, float radio, sf::Color color, int capas = 5);
     sf::Texture& texEstPorId(int id);
@@ -57,6 +59,7 @@ private:
     void dibujarBoton(const std::string& texto, float x, float y, float ancho, float alto, sf::Color color);
     bool botonPresionado(float x, float y, float ancho, float alto);
 
+    // Paleta
     static const sf::Color COLOR_NARANJA;
     static const sf::Color COLOR_MORADO;
     static const sf::Color COLOR_MORADO_OSC;

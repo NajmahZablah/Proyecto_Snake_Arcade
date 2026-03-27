@@ -35,7 +35,7 @@ public:
     void crecer();
 
     // Getters
-    Coordenada* getCabeza();
+    Coordenada* getCabeza(); // devuelve un puntero a cuerpo[0]
     const std:: vector<Coordenada>& getCuerpo() const;
     int getLongitud() const;
     bool estaViva() const;

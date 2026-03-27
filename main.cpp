@@ -14,12 +14,12 @@ int main() {
         float dt = relojDelta.restart().asSeconds();
 
         // 1) Eventos
-        renderer.procesarEventos(juego);
+        renderer.procesarEventos(juego); // captura la entrada
 
         // 2) Lógica del juego
         if (juego.getEstado() == EstadoJuego::JUGANDO) {
             if (reloj.getElapsedTime().asSeconds() >= juego.getVelocidad()) {
-                juego.actualizar();
+                juego.actualizar(); // avanza la lógica
                 reloj.restart();
             }
         }
@@ -28,7 +28,7 @@ int main() {
         renderer.actualizar(dt, juego);
 
         // 4) Dibujar
-        renderer.dibujar(juego);
+        renderer.dibujar(juego); // renderiza
     }
 
     return 0;

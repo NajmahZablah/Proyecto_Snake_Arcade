@@ -166,6 +166,7 @@ void Juego::verificarColisiones() {
     Coordenada* cabeza = serpiente.getCabeza();
 
     // Wrap en Nivel 1
+    // Atraviesa los bordes y aparece al lado opuesto
     if (nivelActual == Nivel::UNO) {
         if (cabeza->x < 0) {
             cabeza->x = ancho - 1;
@@ -182,6 +183,7 @@ void Juego::verificarColisiones() {
     }
 
     // Paredes en Nivel 2 y 3
+    // Pared letal, si la cabeza está fuera de limites es un GAME OVER
     if (nivelActual != Nivel::UNO) {
         if (cabeza->x < 0 || cabeza->x >= ancho || cabeza->y < 0 || cabeza->y >= alto) {
             serpiente.matar();
@@ -191,6 +193,7 @@ void Juego::verificarColisiones() {
     }
 
     // Sí misma
+    // Compara cuerpo[0] con cada segmento
     if (serpiente.colisionConSiMisma()) {
         serpiente.matar();
         estado = EstadoJuego::GAME_OVER;
@@ -206,7 +209,7 @@ void Juego::verificarColisiones() {
         }
     }
 
-    // Aceituna — colisión exacta de 1 celda (tamaño visual ~36px, razonable)
+    // Aceituna — colisión exacta de 1 celda (tamaño visual 36px, razonable)
     if (aceituna.activa && *cabeza == aceituna.posicion) {
         serpiente.crecer();
         puntaje += aceituna.puntos;
@@ -339,6 +342,7 @@ vector<PuntajeRecord> Juego::cargarPuntajes() const {
     return lista;
 }
 
+// Ordenamiento búrbuja
 void Juego::ordenarPuntajes(vector<PuntajeRecord>& lista) const {
     int n = (int)lista.size();
     for (int i = 0; i < n - 1; i++) {
